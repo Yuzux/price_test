@@ -4,26 +4,23 @@ on:
   push:
     tags:
       - '*'
-
+      
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Set up Docker
-      run: docker build --pull -t price-update .
+    - name: Build Docker Image
+      run: docker build -t your-image-name .
 
-    - name: Save Docker image as tar
-      run: docker save -o price-update.tar price-update
+    - name: Save Docker Image as Tar
+      run: docker save your-image-name -o image.tar
 
-    - name: Create a tar archive
-      run: tar -cvf price-update.tar price-update.tar
-
-    - name: Upload Docker image as asset
+    - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
         name: docker-image
-        path: price-update.tar
+        path: image.tar
