@@ -1,0 +1,29 @@
+name: Docker Build and Save
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      run: docker build --pull -t price-update .
+
+    - name: Save Docker image as tar
+      run: docker save -o price-update.tar price-update
+
+    - name: Create a tar archive
+      run: tar -cvf price-update.tar price-update.tar
+
+    - name: Upload Docker image as asset
+      uses: actions/upload-artifact@v2
+      with:
+        name: docker-image
+        path: price-update.tar
